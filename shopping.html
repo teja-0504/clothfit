@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClothFit - Shop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+    </div>
+
+    <!-- Shopping Page -->
+    <div class="page-section" id="shopping-page" style="display: block;">
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">✂</span>
+                <span class="logo-text">ClothFit</span>
+            </div>
+            <nav class="nav-menu">
+                <button class="nav-btn" onclick="showPage('profile')">Profile</button>
+                <button class="nav-btn active" onclick="showPage('shopping')">Shop</button>
+            </nav>
+        </header>
+
+        <div class="shopping-container">
+            <h2 class="shop-title">Shop Your Perfect Fit</h2>
+            <p class="shop-subtitle">Curated collections tailored to your measurements</p>
+            
+            <!-- User Sizes Display -->
+            <div class="user-sizes-display">
+                <div class="size-badge-item">
+                    <span class="size-badge-label">Your Shirt Size:</span>
+                    <span class="size-badge-value" id="shop-shirt-size">-</span>
+                </div>
+                <div class="size-badge-item">
+                    <span class="size-badge-label">Your Pants Size:</span>
+                    <span class="size-badge-value" id="shop-pants-size">-</span>
+                </div>
+                <div class="size-badge-item">
+                    <span class="size-badge-label">Your Jacket Size:</span>
+                    <span class="size-badge-value" id="shop-jacket-size">-</span>
+                </div>
+            </div>
+
+            <!-- Gender Toggle -->
+            <div class="gender-toggle">
+                <button class="gender-btn active" data-gender="all" onclick="filterByGender('all')">
+                    <span class="gender-icon">👤</span> All
+                </button>
+                <button class="gender-btn" data-gender="male" onclick="filterByGender('male')">
+                    <span class="gender-icon">👨</span> Men
+                </button>
+                <button class="gender-btn" data-gender="female" onclick="filterByGender('female')">
+                    <span class="gender-icon">👩</span> Women
+                </button>
+            </div>
+
+            <!-- Category Filters -->
+            <div class="category-filters">
+                <button class="category-btn active" data-category="all" onclick="filterProducts('all')">All</button>
+                <button class="category-btn" data-category="tops" onclick="filterProducts('tops')">Tops</button>
+                <button class="category-btn" data-category="bottoms" onclick="filterProducts('bottoms')">Bottoms</button>
+                <button class="category-btn" data-category="outerwear" onclick="filterProducts('outerwear')">Outerwear</button>
+                <button class="category-btn" data-category="accessories" onclick="filterProducts('accessories')">Accessories</button>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="products-grid" id="products-grid">
+                <!-- Products will be dynamically loaded here -->
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-state" id="empty-state" style="display: none;">
+                <div class="empty-icon">🛒</div>
+                <h3>No products found</h3>
+                <p>Try adjusting your filters to see more products</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Full Page Product Detail -->
+    <div class="product-detail-page" id="product-detail-page">
+        <div class="product-detail-header">
+            <button class="detail-back-btn" onclick="closeProductDetail()">
+                <span class="back-arrow">←</span> Back to Shop
+            </button>
+        </div>
+        <div class="product-detail-content">
+            <div class="detail-image-section">
+                <div class="detail-slider" id="detail-slider">
+                    <!-- Product Image -->
+                    <div class="detail-slide active" data-slide="0">
+                        <div class="detail-image-wrapper" id="detail-image">
+                        </div>
+                    </div>
+                </div>
+                <div class="detail-badges" id="detail-badges"></div>
+            </div>
+            <div class="detail-info-section">
+                <span class="detail-brand" id="detail-brand"></span>
+                <h1 class="detail-name" id="detail-name"></h1>
+                <div class="detail-price-row" id="detail-price"></div>
+                <p class="detail-description" id="detail-description"></p>
+
+                <div class="detail-specs-grid">
+                    <div class="detail-spec-card">
+                        <span class="detail-spec-icon">🧵</span>
+                        <span class="detail-spec-label">Material</span>
+                        <span class="detail-spec-value" id="detail-material"></span>
+                    </div>
+                    <div class="detail-spec-card">
+                        <span class="detail-spec-icon">📐</span>
+                        <span class="detail-spec-label">Fit</span>
+                        <span class="detail-spec-value" id="detail-fit"></span>
+                    </div>
+                    <div class="detail-spec-card">
+                        <span class="detail-spec-icon">🏷️</span>
+                        <span class="detail-spec-label">Category</span>
+                        <span class="detail-spec-value" id="detail-category"></span>
+                    </div>
+                    <div class="detail-spec-card">
+                        <span class="detail-spec-icon">👤</span>
+                        <span class="detail-spec-label">For</span>
+                        <span class="detail-spec-value" id="detail-gender"></span>
+                    </div>
+                </div>
+
+                <div class="detail-sizes-section">
+                    <span class="detail-sizes-title">Select Size:</span>
+                    <div class="detail-sizes-list" id="detail-sizes"></div>
+                    <span class="detail-recommended-note" id="detail-recommended-note"></span>
+                </div>
+
+                <div class="detail-actions">
+                    <button class="detail-add-cart-btn" id="detail-add-cart-btn" onclick="addToCartFromDetail()">
+                        <span>🛒</span> Add to Cart
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Try On Modal -->
+    <div class="tryon-modal" id="tryon-modal">
+        <div class="tryon-modal-content">
+            <button class="tryon-close-btn" onclick="closeTryOn()">✕</button>
+            <h2 class="tryon-title">Virtual Try-On</h2>
+            <p class="tryon-subtitle" id="tryon-product-name"></p>
+            <div class="tryon-preview">
+                <div class="tryon-user-photo" id="tryon-user-photo">
+                    <img id="tryon-user-img" alt="Your photo" />
+                    <img class="tryon-product-overlay" id="tryon-product-img" alt="Product overlay" />
+                </div>
+                <div class="tryon-no-photo" id="tryon-no-photo" style="display:none;">
+                    <span class="tryon-no-photo-icon">📷</span>
+                    <p>No profile photo found.</p>
+                    <p>Upload a full-body photo on the Profile page to use Virtual Try-On.</p>
+                </div>
+            </div>
+            <div class="tryon-controls" id="tryon-controls">
+                <div class="tryon-control-group">
+                    <label>Size</label>
+                    <input type="range" id="tryon-size" min="30" max="100" value="60" oninput="updateTryOnOverlay()" />
+                </div>
+                <div class="tryon-control-group">
+                    <label>Position Y</label>
+                    <input type="range" id="tryon-pos-y" min="0" max="80" value="15" oninput="updateTryOnOverlay()" />
+                </div>
+                <div class="tryon-control-group">
+                    <label>Opacity</label>
+                    <input type="range" id="tryon-opacity" min="50" max="100" value="85" oninput="updateTryOnOverlay()" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        // Initialize shopping page on load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadShoppingPage();
+        });
+    </script>
+</body>
+</html>

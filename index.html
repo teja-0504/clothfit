@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClothFit - Perfect Fit, Every Time</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+    </div>
+
+    <!-- Intro Animation Screen -->
+    <div class="intro-screen" id="intro-screen">
+        <div class="intro-content">
+            <div class="intro-logo">
+                <span class="intro-logo-icon">✂</span>
+                <span class="intro-logo-text">ClothFit</span>
+            </div>
+            <div class="intro-tagline">
+                <span class="tagline-word">Perfect</span>
+                <span class="tagline-word">Fit,</span>
+                <span class="tagline-word">Every</span>
+                <span class="tagline-word">Time</span>
+            </div>
+            <div class="intro-loader">
+                <div class="intro-loader-bar"></div>
+            </div>
+            <p class="intro-subtitle">AI-Powered Size Recommendations</p>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container" id="main-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">✂</span>
+                <span class="logo-text">ClothFit</span>
+            </div>
+            <p class="tagline">Perfect Fit, Every Time</p>
+        </header>
+
+        <!-- Progress Steps -->
+        <div class="progress-container">
+            <div class="progress-step active" data-step="1">
+                <div class="step-circle">1</div>
+                <span class="step-label">Details</span>
+            </div>
+            <div class="progress-line"></div>
+            <div class="progress-step" data-step="2">
+                <div class="step-circle">2</div>
+                <span class="step-label">Photo</span>
+            </div>
+            <div class="progress-line"></div>
+            <div class="progress-step" data-step="3">
+                <div class="step-circle">3</div>
+                <span class="step-label">Results</span>
+            </div>
+        </div>
+
+        <!-- Form Container -->
+        <div class="form-card">
+            <!-- Step 1: Personal Details -->
+            <div class="form-step active" id="step-1">
+                <h2 class="step-title">Let's Get Your Details</h2>
+                <p class="step-description">Enter your information to get personalized size recommendations</p>
+                
+                <div id="details-form">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" placeholder="your@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+1 234 567 8900">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="age">Age</label>
+                            <input type="number" id="age" name="age" placeholder="25" min="13" max="100">
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select id="gender" name="gender" required>
+                                <option value="">Select gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="preferred_category">Preferred Clothing Style</label>
+                        <select id="preferred_category" name="preferred_category">
+                            <option value="casual">Casual</option>
+                            <option value="formal">Formal</option>
+                            <option value="sports">Sports</option>
+                            <option value="traditional">Traditional</option>
+                        </select>
+                    </div>
+                    
+                    <button type="button" class="btn-primary" onclick="goToStep(2)">
+                        Continue to Photo
+                        <span class="btn-arrow">→</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Photo Upload -->
+            <div class="form-step" id="step-2">
+                <h2 class="step-title">Upload Your Photo</h2>
+                <p class="step-description">Take or upload a full-body photo for accurate measurements</p>
+                
+                <div class="upload-zone" id="upload-zone">
+                    <input type="file" id="photo-input" name="photo" accept="image/*" hidden>
+                    <div class="upload-placeholder" id="upload-placeholder">
+                        <div class="upload-icon">📷</div>
+                        <p class="upload-text">Drag & drop your photo here</p>
+                        <p class="upload-subtext">or click to browse</p>
+                        <div class="upload-guidelines">
+                            <h4>📋 Guidelines:</h4>
+                            <ul>
+                                <li>Full body visible (head to toe)</li>
+                                <li>Stand straight, arms slightly away from body</li>
+                                <li>Good lighting, no blurry images</li>
+                                <li>Wear fitted clothing for accuracy</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="preview-container" id="preview-container" style="display: none;">
+                        <img id="photo-preview" src="" alt="Preview">
+                        <button type="button" class="remove-photo" onclick="removePhoto()">✕</button>
+                    </div>
+                </div>
+                
+                <!-- Camera Capture -->
+                <button type="button" class="btn-secondary" id="camera-btn" onclick="openCamera()">
+                    📸 Take Photo with Camera
+                </button>
+                
+                <!-- Camera Modal -->
+                <div class="camera-modal" id="camera-modal">
+                    <div class="camera-content">
+                        <video id="camera-feed" autoplay playsinline></video>
+                        <canvas id="camera-canvas" hidden></canvas>
+                        <div class="camera-controls">
+                            <button type="button" class="btn-capture" id="capture-btn">Capture</button>
+                            <button type="button" class="btn-cancel" onclick="closeCamera()">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="button-group">
+                    <button type="button" class="btn-back" onclick="goToStep(1)">← Back</button>
+                    <button type="button" class="btn-primary" id="analyze-btn" onclick="analyzePhoto(); event.preventDefault(); event.stopPropagation(); return false;" disabled>
+                        Analyze Photo
+                        <span class="btn-arrow">→</span>
+                    </button>
+                </div>
+                
+                <!-- Loading State -->
+                <div class="loading-container" id="loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p class="loading-text">Analyzing your photo...</p>
+                    <div class="loading-steps">
+                        <span id="loading-step">Detecting body...</span>
+                    </div>
+                </div>
+                
+                <!-- Error Message -->
+                <div class="error-message" id="error-message" style="display: none;">
+                    <span class="error-icon">⚠️</span>
+                    <p id="error-text"></p>
+                </div>
+            </div>
+
+            <!-- Step 3: Results -->
+            <div class="form-step" id="step-3">
+                <div class="results-header">
+                    <h2 class="step-title">Your Perfect Sizes</h2>
+                    <p class="step-description">Based on your body measurements</p>
+                    <button type="button" class="btn-edit" id="edit-btn" onclick="toggleEditMode()">✏️ Edit</button>
+                </div>
+                
+                <!-- Body Shape -->
+                <div class="body-shape-card">
+                    <div class="shape-icon">👤</div>
+                    <div class="shape-info">
+                        <span class="shape-label">Your Body Shape</span>
+                        <span class="shape-value" id="body-shape">-</span>
+                        <select id="body-shape-edit" class="edit-input" style="display: none;">
+                            <option value="Hourglass">Hourglass</option>
+                            <option value="Pear">Pear</option>
+                            <option value="Apple">Apple</option>
+                            <option value="Rectangle">Rectangle</option>
+                            <option value="Inverted Triangle">Inverted Triangle</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Measurements Grid -->
+                <div class="measurements-grid">
+                    <div class="measurement-card">
+                        <span class="measurement-icon">💪</span>
+                        <span class="measurement-label">Shoulder Width</span>
+                        <span class="measurement-value" id="shoulder-width">-</span>
+                        <input type="number" class="edit-input measurement-edit" id="shoulder-width-edit" style="display: none;" step="0.1">
+                        <span class="measurement-unit">cm</span>
+                    </div>
+                    <div class="measurement-card">
+                        <span class="measurement-icon">🫁</span>
+                        <span class="measurement-label">Chest</span>
+                        <span class="measurement-value" id="chest">-</span>
+                        <input type="number" class="edit-input measurement-edit" id="chest-edit" style="display: none;" step="0.1">
+                        <span class="measurement-unit">cm</span>
+                    </div>
+                    <div class="measurement-card">
+                        <span class="measurement-icon">⭕</span>
+                        <span class="measurement-label">Waist</span>
+                        <span class="measurement-value" id="waist">-</span>
+                        <input type="number" class="edit-input measurement-edit" id="waist-edit" style="display: none;" step="0.1">
+                        <span class="measurement-unit">cm</span>
+                    </div>
+                    <div class="measurement-card">
+                        <span class="measurement-icon">🦵</span>
+                        <span class="measurement-label">Hip</span>
+                        <span class="measurement-value" id="hip">-</span>
+                        <input type="number" class="edit-input measurement-edit" id="hip-edit" style="display: none;" step="0.1">
+                        <span class="measurement-unit">cm</span>
+                    </div>
+                </div>
+                
+                <!-- Recommended Sizes -->
+                <div class="sizes-section">
+                    <h3>Recommended Sizes</h3>
+                    <div class="sizes-grid">
+                        <div class="size-card">
+                            <span class="size-type">👕 Shirt</span>
+                            <span class="size-value" id="shirt-size">-</span>
+                            <select id="shirt-size-edit" class="edit-input size-edit" style="display: none;">
+                                <option value="XS">XS</option>
+                                <option value="S">S</option>
+                                <option value="M">M</option>
+                                <option value="L">L</option>
+                                <option value="XL">XL</option>
+                                <option value="XXL">XXL</option>
+                            </select>
+                        </div>
+                        <div class="size-card">
+                            <span class="size-type">👖 Pants</span>
+                            <span class="size-value" id="pants-size">-</span>
+                            <select id="pants-size-edit" class="edit-input size-edit" style="display: none;">
+                                <option value="XS">XS</option>
+                                <option value="S">S</option>
+                                <option value="M">M</option>
+                                <option value="L">L</option>
+                                <option value="XL">XL</option>
+                                <option value="XXL">XXL</option>
+                            </select>
+                        </div>
+                        <div class="size-card">
+                            <span class="size-type">🧥 Jacket</span>
+                            <span class="size-value" id="jacket-size">-</span>
+                            <select id="jacket-size-edit" class="edit-input size-edit" style="display: none;">
+                                <option value="XS">XS</option>
+                                <option value="S">S</option>
+                                <option value="M">M</option>
+                                <option value="L">L</option>
+                                <option value="XL">XL</option>
+                                <option value="XXL">XXL</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="edit-actions" id="edit-actions" style="display: none;">
+                    <button type="button" class="btn-secondary" onclick="cancelEdit()">Cancel</button>
+                    <button type="button" class="btn-primary" onclick="saveEdit()">Save Changes</button>
+                </div>
+                
+                <button type="button" class="btn-primary btn-shop" onclick="startShopping()">
+                    Start Shopping 🛒
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Page -->
+    <div class="page-section" id="profile-page" style="display: none;">
+        <header class="header top-bar">
+            <div class="logo" onclick="showPage('shopping')" style="cursor:pointer;">
+                <span class="logo-icon">✂</span>
+                <span class="logo-text">ClothFit</span>
+            </div>
+            <div class="top-bar-actions">
+                <button class="nav-btn" onclick="showPage('shopping')">🛒 Shop</button>
+                <div class="top-bar-avatar active-page" onclick="showPage('profile')">
+                    <img id="topbar-profile-img" class="topbar-avatar-img" style="display: none;" alt="Profile">
+                    <span id="topbar-profile-icon" class="topbar-avatar-icon">👤</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="profile-container">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <span id="profile-avatar-icon">👤</span>
+                    <img id="profile-avatar-img" class="profile-avatar-img" style="display: none;" alt="Profile Photo">
+                </div>
+                <h2 id="profile-name">Welcome User</h2>
+                <p class="profile-email" id="profile-email">user@email.com</p>
+            </div>
+
+            <div class="profile-stats">
+                <div class="stat-card">
+                    <span class="stat-icon">👕</span>
+                    <span class="stat-label">Shirt Size</span>
+                    <span class="stat-value" id="profile-shirt-size">-</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">👖</span>
+                    <span class="stat-label">Pants Size</span>
+                    <span class="stat-value" id="profile-pants-size">-</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">🧥</span>
+                    <span class="stat-label">Jacket Size</span>
+                    <span class="stat-value" id="profile-jacket-size">-</span>
+                </div>
+            </div>
+
+            <div class="profile-details-card">
+                <div class="card-header">
+                    <h3>Personal Details</h3>
+                    <button class="btn-edit-profile" id="btn-edit-profile" onclick="toggleProfileEdit()">✏️ Edit</button>
+                </div>
+                
+                <div class="profile-info" id="profile-info">
+                    <div class="info-row">
+                        <span class="info-label">Full Name</span>
+                        <span class="info-value" id="profile-name-value">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Email</span>
+                        <span class="info-value" id="profile-email-value">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Phone</span>
+                        <span class="info-value" id="profile-phone-value">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Gender</span>
+                        <span class="info-value" id="profile-gender-value">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Age</span>
+                        <span class="info-value" id="profile-age-value">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Preferred Style</span>
+                        <span class="info-value" id="profile-style-value">-</span>
+                    </div>
+                </div>
+
+                <div class="profile-edit-form" id="profile-edit-form" style="display: none;">
+                    <div class="form-group">
+                        <label for="edit-name">Full Name</label>
+                        <input type="text" id="edit-name" placeholder="Your full name">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-email">Email</label>
+                        <input type="email" id="edit-email" placeholder="your@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-phone">Phone</label>
+                        <input type="tel" id="edit-phone" placeholder="+1 234 567 8900">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="edit-gender">Gender</label>
+                            <select id="edit-gender">
+                                <option value="">Select gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-age">Age</label>
+                            <input type="number" id="edit-age" placeholder="25" min="13" max="100">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-style">Preferred Clothing Style</label>
+                        <select id="edit-style">
+                            <option value="casual">Casual</option>
+                            <option value="formal">Formal</option>
+                            <option value="sports">Sports</option>
+                            <option value="traditional">Traditional</option>
+                        </select>
+                    </div>
+                    <div class="edit-profile-actions">
+                        <button type="button" class="btn-secondary" onclick="cancelProfileEdit()">Cancel</button>
+                        <button type="button" class="btn-primary" onclick="saveProfile()">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-measurements-card">
+                <div class="card-header">
+                    <h3>Your Measurements</h3>
+                    <button class="btn-edit-profile" id="btn-edit-measurements" onclick="toggleMeasurementsEdit()">✏️ Edit</button>
+                </div>
+                <div class="measurements-list" id="profile-measurements-display">
+                    <div class="measurement-row">
+                        <span class="measurement-label">Body Shape</span>
+                        <span class="measurement-value" id="profile-body-shape">-</span>
+                    </div>
+                    <div class="measurement-row">
+                        <span class="measurement-label">Shoulder Width</span>
+                        <span class="measurement-value" id="profile-shoulder">- cm</span>
+                    </div>
+                    <div class="measurement-row">
+                        <span class="measurement-label">Chest</span>
+                        <span class="measurement-value" id="profile-chest">- cm</span>
+                    </div>
+                    <div class="measurement-row">
+                        <span class="measurement-label">Waist</span>
+                        <span class="measurement-value" id="profile-waist">- cm</span>
+                    </div>
+                    <div class="measurement-row">
+                        <span class="measurement-label">Hip</span>
+                        <span class="measurement-value" id="profile-hip">- cm</span>
+                    </div>
+                </div>
+                
+                <!-- Measurements Edit Form -->
+                <div class="profile-measurements-edit" id="profile-measurements-edit" style="display: none;">
+                    <div class="form-group">
+                        <label for="edit-body-shape">Body Shape</label>
+                        <select id="edit-body-shape">
+                            <option value="Hourglass">Hourglass</option>
+                            <option value="Pear">Pear</option>
+                            <option value="Apple">Apple</option>
+                            <option value="Rectangle">Rectangle</option>
+                            <option value="Inverted Triangle">Inverted Triangle</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-shoulder">Shoulder Width (cm)</label>
+                        <input type="number" id="edit-shoulder" step="0.1" placeholder="40">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-chest">Chest (cm)</label>
+                        <input type="number" id="edit-chest" step="0.1" placeholder="90">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-waist">Waist (cm)</label>
+                        <input type="number" id="edit-waist" step="0.1" placeholder="75">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-hip">Hip (cm)</label>
+                        <input type="number" id="edit-hip" step="0.1" placeholder="95">
+                    </div>
+                    <div class="edit-profile-actions">
+                        <button type="button" class="btn-secondary" onclick="cancelMeasurementsEdit()">Cancel</button>
+                        <button type="button" class="btn-primary" onclick="saveMeasurements()">Save Measurements</button>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="btn-primary btn-remeasure" onclick="remeasureUser()">
+                🔄 Re-measure with New Photo
+            </button>
+        </div>
+    </div>
+
+    <!-- Shopping Page -->
+    <div class="page-section" id="shopping-page" style="display: none;">
+        <header class="header top-bar">
+            <div class="logo" onclick="showPage('shopping')" style="cursor:pointer;">
+                <span class="logo-icon">✂</span>
+                <span class="logo-text">ClothFit</span>
+            </div>
+            <div class="top-bar-actions">
+                <button class="nav-btn active">🛒 Shop</button>
+                <div class="top-bar-avatar" onclick="showPage('profile')">
+                    <img id="topbar-shop-profile-img" class="topbar-avatar-img" style="display: none;" alt="Profile">
+                    <span id="topbar-shop-profile-icon" class="topbar-avatar-icon">👤</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="shopping-container">
+            <h2 class="shop-title">Shop with Your Size</h2>
+            <p class="shop-subtitle">We've selected products that fit you perfectly</p>
+            
+            <div class="user-sizes-display">
+                <div class="size-badge-item">
+                    <span class="size-badge-label">Your Shirt Size:</span>
+                    <span class="size-badge-value" id="shop-shirt-size">-</span>
+                </div>
+                <div class="size-badge-item">
+                    <span class="size-badge-label">Your Pants Size:</span>
+                    <span class="size-badge-value" id="shop-pants-size">-</span>
+                </div>
+                <div class="size-badge-item">
+                    <span class="size-badge-label">Your Jacket Size:</span>
+                    <span class="size-badge-value" id="shop-jacket-size">-</span>
+                </div>
+            </div>
+
+            <!-- Gender Toggle -->
+            <div class="gender-toggle">
+                <button class="gender-btn active" data-gender="all" onclick="filterByGender('all')">
+                    <span class="gender-icon">👤</span> All
+                </button>
+                <button class="gender-btn" data-gender="male" onclick="filterByGender('male')">
+                    <span class="gender-icon">👨</span> Men
+                </button>
+                <button class="gender-btn" data-gender="female" onclick="filterByGender('female')">
+                    <span class="gender-icon">👩</span> Women
+                </button>
+            </div>
+
+            <div class="category-filters">
+                <button class="category-btn active" data-category="all" onclick="filterProducts('all')">All</button>
+                <button class="category-btn" data-category="tops" onclick="filterProducts('tops')">Shirts</button>
+                <button class="category-btn" data-category="bottoms" onclick="filterProducts('bottoms')">Pants</button>
+                <button class="category-btn" data-category="outerwear" onclick="filterProducts('outerwear')">Jackets</button>
+                <button class="category-btn" data-category="accessories" onclick="filterProducts('accessories')">Accessories</button>
+            </div>
+
+            <div class="products-grid" id="products-grid">
+                <!-- Products will be dynamically loaded here -->
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-state" id="empty-state" style="display: none;">
+                <div class="empty-icon">🛒</div>
+                <h3>No products found</h3>
+                <p>Try adjusting your filters to see more products</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Full Page Product Detail -->
+    <div class="product-detail-page" id="product-detail-page">
+        <div class="product-detail-header">
+            <button class="detail-back-btn" onclick="closeProductDetail()">
+                <span class="back-arrow">←</span> Back to Shop
+            </button>
+        </div>
+        <div class="product-detail-content">
+            <div class="detail-image-section">
+                <div class="detail-slider" id="detail-slider">
+                    <!-- Slide 1: Original Image -->
+                    <div class="detail-slide active" data-slide="0">
+                        <div class="detail-image-wrapper" id="detail-image">
+                        </div>
+                        <span class="slide-label">📷 Original</span>
+                    </div>
+                    <!-- Slide 2: 3D View -->
+                    <div class="detail-slide" data-slide="1">
+                        <div class="detail-image-wrapper detail-3d-view" id="detail-image-3d">
+                        </div>
+                        <span class="slide-label">🔮 3D View</span>
+                    </div>
+                </div>
+                <!-- Slider Controls -->
+                <button class="slider-arrow slider-arrow-left" id="slider-prev" onclick="slideDetailImage(-1)">‹</button>
+                <button class="slider-arrow slider-arrow-right" id="slider-next" onclick="slideDetailImage(1)">›</button>
+                <!-- Slider Dots -->
+                <div class="slider-dots" id="slider-dots">
+                    <span class="slider-dot active" data-dot="0" onclick="goToDetailSlide(0)"></span>
+                    <span class="slider-dot" data-dot="1" onclick="goToDetailSlide(1)"></span>
+                </div>
+                <!-- Slider Progress Bar -->
+                <div class="slider-progress">
+                    <div class="slider-progress-bar" id="slider-progress-bar"></div>
+                </div>
+                <div class="detail-badges" id="detail-badges"></div>
+            </div>
+            <div class="detail-info-section">
+                <span class="detail-brand" id="detail-brand"></span>
+                <h1 class="detail-name" id="detail-name"></h1>
+                <div class="detail-price-row" id="detail-price"></div>
+                <p class="detail-description" id="detail-description"></p>
+
+                <div class="detail-specs-grid">
+                    <div class="detail-spec-card">
+                        <span class="detail-spec-icon">🧵</span>
+                        <span class="detail-spec-label">Material</span>
+                        <span class="detail-spec-value" id="detail-material"></span>
+                    </div>
+                    <div class="detail-spec-card">
+                        <span class="detail-spec-icon">📐</span>
+                        <span class="detail-spec-label">Fit</span>
+                        <span class="detail-spec-value" id="detail-fit"></span>
+                    </div>
+                    <div class="detail-spec-card">
+                        <span class="detail-spec-icon">🏷️</span>
+                        <span class="detail-spec-label">Category</span>
+                        <span class="detail-spec-value" id="detail-category"></span>
+                    </div>
+                    <div class="detail-spec-card">
+                        <span class="detail-spec-icon">👤</span>
+                        <span class="detail-spec-label">For</span>
+                        <span class="detail-spec-value" id="detail-gender"></span>
+                    </div>
+                </div>
+
+                <div class="detail-sizes-section">
+                    <span class="detail-sizes-title">Select Size:</span>
+                    <div class="detail-sizes-list" id="detail-sizes"></div>
+                    <span class="detail-recommended-note" id="detail-recommended-note"></span>
+                </div>
+
+                <div class="detail-actions">
+                    <button class="detail-add-cart-btn" id="detail-add-cart-btn" onclick="addToCartFromDetail()">
+                        <span>🛒</span> Add to Cart
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

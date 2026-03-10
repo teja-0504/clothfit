@@ -1,0 +1,28 @@
+services:
+  clothfit:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: clothfit-app
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./uploads:/app/uploads
+      - ./users.db:/app/users.db
+    environment:
+      FLASK_APP: server.py
+      FLASK_ENV: production
+      PYTHONUNBUFFERED: 1
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/').read()"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - clothfit-network
+
+networks:
+  clothfit-network:
+    driver: bridge
